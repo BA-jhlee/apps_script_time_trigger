@@ -1,0 +1,39 @@
+//You can use this code by inserting the function "triggerController" into your own function.
+//HOUR means the hour you want to trigger your function at.
+//MINUTE means the minute you want to trigger your function at.
+//FUNCTION_NAME_STRING means the name of the function that you want to trigger.
+
+function triggerController(HOUR,MINUTE,FUNCTION_NAME_STRING) {
+  var triggers = ScriptApp.getProjectTriggers();
+  
+  if (triggers.length>0) {
+  for (i=0;i<=0;i++) {
+    switch (triggers[i].getHandlerFunction()) {
+      case FUNCTION_NAME_STRING: var triggerTBD = triggers[i]; break;
+      default: var triggerTBD = null;
+    }}}
+  
+  if (triggers.length==0) {
+    ScriptApp.newTrigger('triggerController').timeBased().everyDays(1).nearMinute(15).create();}
+  
+  var _date = new Date();
+  var _targetd = new Date(_date.getFullYear(),_date.getMonth(),_date.getDate(),HOUR,MINUTE);
+  
+  var _datevalue = _date.getTime();
+  var _targetdv = _targetd.getTime();
+  
+  var _timeD = _targetdv - _datevalue;
+  
+  function _newT(FUNCTION_NAME_STRING,_timeD) { ScriptApp.newTrigger(FUNCTION_NAME_STRING).timeBased().after(_timeD).create();}
+  
+  switch (_date.getDay()) {
+    case 0: return null; break;
+    case 6: return null; break;
+    default:
+      switch (triggers.length) {
+        case 0: _newT(FUNCTION_NAME_STRING,_timeD); break;
+        case 1: _newT(FUNCTION_NAME_STRING,_timeD); break;
+        case 2: ScriptApp.deleteTrigger(triggerTBD); _newT(FUNCTION_NAME_STRING,_timeD); break;
+  }
+}
+}
